@@ -1,50 +1,77 @@
-# React + TypeScript + Vite
+# Movie Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive React dashboard application that visualizes movie data, providing insights about Oscar nominations, ratings, and other movie statistics.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Oscar Statistics Overview**: Visualize Oscar nominations and wins by year with clear and interactive charts.
+- **Top Performers**: Showcase the highest-rated movies and Oscar winners.
+- **Advanced Filtering**: Filter movies by year, genre, country, and language for tailored insights.
+- **Country/Language Insights**: Analyze the distribution of movies across various countries and languages.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Frontend Framework**: React 18 with TypeScript
+- **State Management**: Redux Toolkit
+- **Styling**: TailwindCSS
+- **UI Components**: shadcn/ui Components
+- **Data Visualization**: Recharts
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+Follow the steps below to set up and run the project locally.
+
+### Prerequisites
+
+- **Node.js**: Version 18 or higher
+- **Package Manager**: npm
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/samiwarraich/movie-dashboard.git
+   ```
+
+2. **Navigate to the project directory**
+
+   ```bash
+   cd movie-dashboard
+   ```
+
+3. **Install dependencies**
+
+   Using npm:
+
+   ```bash
+   npm install
+   ```
+
+4. **Start the development server**
+
+   Using npm:
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open the application**
+
+   Navigate to [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Project Structure
+
+```
+src/
+├── components/       # Reusable React components
+├── hooks/            # Custom React hooks
+├── redux/            # Redux store and slices
+├── types/            # TypeScript type definitions
+├── utils/            # Helper functions and utilities
+└── App.tsx           # Application entry point
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Author
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+**Sami Warraich**
