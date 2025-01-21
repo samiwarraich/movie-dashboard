@@ -11,10 +11,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": {
+      "/api/api": {
         target: "https://www.jsondataai.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (path) => path.replace(/^\/api\/api/, "/api"),
       },
     },
   },
