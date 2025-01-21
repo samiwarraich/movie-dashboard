@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 
-function Loading() {
+const Loading = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
@@ -9,6 +9,6 @@ function Loading() {
       </div>
     </div>
   );
-}
+};
 
 export default Loading;
