@@ -15,9 +15,6 @@ export default defineConfig({
         target: "https://www.jsondataai.com",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, "/api"),
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
       },
     },
   },
