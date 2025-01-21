@@ -1,7 +1,8 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "@/redux/hooks";
 import { setFilter, clearFilters } from "@/redux/movies/dashboardSlice";
-import type { FilterKey, FilterValue } from "@/types";
+import { applyMovieFilters } from "@/utils/movieHelpers";
+import type { FilterKey, FilterValue, Movie } from "@/types";
 
 interface FilterOptions {
   years: string[];
@@ -14,27 +15,48 @@ export const useMovieFilters = () => {
   const dispatch = useDispatch();
   const { movies, filters } = useSelector((state) => state.movies);
 
+  // Helper function to get filtered movies excluding a specific filter
+  const getFilteredMoviesExcluding = useCallback(
+    (excludeKey: FilterKey) => {
+      const tempFilters = { ...filters };
+      if (excludeKey === "search") {
+        tempFilters.search = "";
+      } else {
+        tempFilters[excludeKey] = null;
+      }
+      return applyMovieFilters(movies, tempFilters);
+    },
+    [filters, movies]
+  );
+
+  // Calculate available options based on currently filtered movies
   const filterOptions = useMemo<FilterOptions>(() => {
     const getUniqueValues = (
-      key: "year" | "genre" | "country" | "language"
+      key: "year" | "genre" | "country" | "language",
+      sourceMovies: Movie[]
     ) => {
       if (key === "year") {
-        return [...new Set(movies.map((movie) => movie[key]))].sort();
+        return [...new Set(sourceMovies.map((movie) => movie[key]))].sort();
       }
-      const values = movies.flatMap((movie) => movie[key]);
+      const values = sourceMovies.flatMap((movie) => movie[key]);
       return [...new Set(values)].sort();
     };
 
     return {
-      years: getUniqueValues("year"),
-      genres: getUniqueValues("genre"),
-      countries: getUniqueValues("country"),
-      languages: getUniqueValues("language"),
+      years: getUniqueValues("year", getFilteredMoviesExcluding("year")),
+      genres: getUniqueValues("genre", getFilteredMoviesExcluding("genre")),
+      countries: getUniqueValues(
+        "country",
+        getFilteredMoviesExcluding("country")
+      ),
+      languages: getUniqueValues(
+        "language",
+        getFilteredMoviesExcluding("language")
+      ),
     };
-  }, [movies]);
+  }, [getFilteredMoviesExcluding]);
 
   const handleFilterChange = (key: FilterKey, value: FilterValue | string) => {
-    // Type guard to ensure type safety
     if (key === "search") {
       dispatch(setFilter({ key, value: value as string }));
     } else {
