@@ -13,23 +13,25 @@ export interface Movie {
   oscar_winning_list: string[];
 }
 
-export interface Filters {
-  search: string;
-  year: string | null;
-  genre: string | null;
-  country: string | null;
-  language: string | null;
-}
+export type FilterValue = string | null;
 
-export type FilterKeys = keyof Filters;
-
-// Make FilterAction a discriminated union type
+// Make FilterAction a discriminated union type for better type safety
 export type FilterAction =
   | { key: "search"; value: string }
-  | { key: "year"; value: string | null }
-  | { key: "genre"; value: string | null }
-  | { key: "country"; value: string | null }
-  | { key: "language"; value: string | null };
+  | { key: "year"; value: FilterValue }
+  | { key: "genre"; value: FilterValue }
+  | { key: "country"; value: FilterValue }
+  | { key: "language"; value: FilterValue };
+
+export interface Filters {
+  search: string;
+  year: FilterValue;
+  genre: FilterValue;
+  country: FilterValue;
+  language: FilterValue;
+}
+
+export type FilterKey = keyof Filters;
 
 export interface OscarStats {
   nominationsByYear: Record<string, number>;

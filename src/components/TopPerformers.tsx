@@ -1,4 +1,5 @@
 // src/components/TopPerformers.tsx
+import { useMemo } from "react";
 import {
   Table,
   TableBody,
@@ -10,7 +11,6 @@ import {
 import { useSelector } from "@/redux/hooks";
 import { Star, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import React from "react";
 
 interface TopPerformersProps {
   view: "ratings" | "oscars";
@@ -19,8 +19,7 @@ interface TopPerformersProps {
 const TopPerformers = ({ view }: TopPerformersProps) => {
   const { filteredMovies } = useSelector((state) => state.movies);
 
-  // Optimize sorting and filtering with useMemo
-  const topMovies = React.useMemo(() => {
+  const topMovies = useMemo(() => {
     let sorted;
     if (view === "ratings") {
       sorted = [...filteredMovies].sort(
@@ -39,8 +38,7 @@ const TopPerformers = ({ view }: TopPerformersProps) => {
     return sorted.slice(0, 10);
   }, [filteredMovies, view]);
 
-  // Memoize the table rows to prevent unnecessary re-renders
-  const tableRows = React.useMemo(() => {
+  const tableRows = useMemo(() => {
     return topMovies.map((movie, index) => (
       <TableRow key={`${movie.title}-${index}`}>
         <TableCell className="font-medium">#{index + 1}</TableCell>

@@ -93,29 +93,17 @@ const dashboardSlice = createSlice({
   initialState,
   reducers: {
     setFilter: (state, action: PayloadAction<FilterAction>) => {
-      // Type-safe assignment using discriminated union
-      switch (action.payload.key) {
-        case "search":
-          state.filters.search = action.payload.value;
-          break;
-        case "year":
-          state.filters.year = action.payload.value;
-          break;
-        case "genre":
-          state.filters.genre = action.payload.value;
-          break;
-        case "country":
-          state.filters.country = action.payload.value;
-          break;
-        case "language":
-          state.filters.language = action.payload.value;
-          break;
+      const { key, value } = action.payload;
+
+      // Type-safe assignment using type narrowing
+      if (key === "search") {
+        state.filters.search = value; // TypeScript knows value is string here
+      } else {
+        state.filters[key] = value; // TypeScript knows value is string | null here
       }
 
-      const filteredMovies = applyFilters(state.movies, state.filters);
-      state.filteredMovies = filteredMovies;
-
-      const stats = calculateStats(filteredMovies);
+      state.filteredMovies = applyFilters(state.movies, state.filters);
+      const stats = calculateStats(state.filteredMovies);
       state.oscarStats = stats.oscarStats;
       state.topPerformers = stats.topPerformers;
     },
