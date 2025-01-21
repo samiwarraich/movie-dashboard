@@ -1,6 +1,7 @@
+// src/components/OscarStatisticsOverview.tsx
 import { useMemo } from "react";
 import { ResponsiveContainer, Bar, BarChart, XAxis, YAxis } from "recharts";
-import { useSelector } from "@/redux/hooks";
+import { useOscarStats } from "@/hooks/useOscarStats";
 import {
   CardContent,
   CardHeader,
@@ -14,17 +15,17 @@ import {
 } from "@/components/ui/chart";
 
 const OscarStatisticsOverview = () => {
-  const { oscarStats, error } = useSelector((state) => state.movies);
+  const { stats } = useOscarStats();
 
   const chartData = useMemo(() => {
-    return Object.entries(oscarStats.nominationsByYear)
+    return Object.entries(stats.nominationsByYear)
       .map(([year, nominations]) => ({
         name: year,
         Nominations: nominations,
-        Wins: oscarStats.winsByYear[year] || 0,
+        Wins: stats.winsByYear[year] || 0,
       }))
       .sort((a, b) => a.name.localeCompare(b.name));
-  }, [oscarStats]);
+  }, [stats]);
 
   // Chart configuration for shadcn chart
   const chartConfig = {
@@ -37,28 +38,6 @@ const OscarStatisticsOverview = () => {
       color: "hsl(var(--chart-2))",
     },
   };
-
-  if (error) {
-    return (
-      <div className="space-y-4">
-        <CardHeader className="px-0">
-          <CardTitle>Oscar Statistics</CardTitle>
-          <CardDescription className="text-destructive">
-            Error loading statistics
-          </CardDescription>
-        </CardHeader>
-      </div>
-    );
-  }
-
-  const totalNominations = Object.values(oscarStats.nominationsByYear).reduce(
-    (acc, val) => acc + val,
-    0
-  );
-  const totalWins = Object.values(oscarStats.winsByYear).reduce(
-    (acc, val) => acc + val,
-    0
-  );
 
   return (
     <div className="space-y-4">
@@ -73,14 +52,16 @@ const OscarStatisticsOverview = () => {
           <div className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm">
             <CardHeader className="p-0">
               <CardTitle className="text-2xl font-bold">
-                {totalNominations}
+                {stats.totalNominations}
               </CardTitle>
               <CardDescription>Total Nominations</CardDescription>
             </CardHeader>
           </div>
           <div className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm">
             <CardHeader className="p-0">
-              <CardTitle className="text-2xl font-bold">{totalWins}</CardTitle>
+              <CardTitle className="text-2xl font-bold">
+                {stats.totalWins}
+              </CardTitle>
               <CardDescription>Total Wins</CardDescription>
             </CardHeader>
           </div>
@@ -88,7 +69,7 @@ const OscarStatisticsOverview = () => {
 
         <div>
           <ChartContainer config={chartConfig}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart data={chartData} margin={{ left: -20 }}>
                 <XAxis
                   dataKey="name"

@@ -1,76 +1,80 @@
+// src/hooks/useMovieFilters.ts
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "@/redux/hooks";
 import { setFilter, clearFilters } from "@/redux/movies/dashboardSlice";
-import { applyMovieFilters } from "@/utils/movieHelpers";
-import type { FilterKey, FilterValue, Movie } from "@/types";
+import { applyMovieFilters, getUniqueValues } from "@/utils/movieHelpers";
+import type { FilterKey, Movie, Filters } from "@/types";
 
-interface FilterOptions {
-  years: string[];
-  genres: string[];
-  countries: string[];
-  languages: string[];
-}
+// Helper function to get filtered movies excluding one filter
+const getFilteredMoviesExcludingFilter = (
+  movies: Movie[],
+  filters: Filters,
+  excludeKey: FilterKey
+): Movie[] => {
+  const tempFilters = { ...filters };
+  if (excludeKey === "search") {
+    tempFilters.search = "";
+  } else {
+    tempFilters[excludeKey] = null;
+  }
+  return applyMovieFilters(movies, tempFilters);
+};
 
 export const useMovieFilters = () => {
   const dispatch = useDispatch();
   const { movies, filters } = useSelector((state) => state.movies);
 
-  // Helper function to get filtered movies excluding a specific filter
-  const getFilteredMoviesExcluding = useCallback(
-    (excludeKey: FilterKey) => {
-      const tempFilters = { ...filters };
-      if (excludeKey === "search") {
-        tempFilters.search = "";
-      } else {
-        tempFilters[excludeKey] = null;
-      }
-      return applyMovieFilters(movies, tempFilters);
-    },
-    [filters, movies]
-  );
+  const filteredMovies = useMemo(() => {
+    return applyMovieFilters(movies, filters);
+  }, [movies, filters]);
 
-  // Calculate available options based on currently filtered movies
-  const filterOptions = useMemo<FilterOptions>(() => {
-    const getUniqueValues = (
-      key: "year" | "genre" | "country" | "language",
-      sourceMovies: Movie[]
-    ) => {
-      if (key === "year") {
-        return [...new Set(sourceMovies.map((movie) => movie[key]))].sort();
-      }
-      const values = sourceMovies.flatMap((movie) => movie[key]);
-      return [...new Set(values)].sort();
-    };
-
+  // Calculate filter options based on movies filtered by other filters
+  const filterOptions = useMemo(() => {
     return {
-      years: getUniqueValues("year", getFilteredMoviesExcluding("year")),
-      genres: getUniqueValues("genre", getFilteredMoviesExcluding("genre")),
+      years: getUniqueValues(
+        getFilteredMoviesExcludingFilter(movies, filters, "year"),
+        "year"
+      ),
+      genres: getUniqueValues(
+        getFilteredMoviesExcludingFilter(movies, filters, "genre"),
+        "genre"
+      ),
       countries: getUniqueValues(
-        "country",
-        getFilteredMoviesExcluding("country")
+        getFilteredMoviesExcludingFilter(movies, filters, "country"),
+        "country"
       ),
       languages: getUniqueValues(
-        "language",
-        getFilteredMoviesExcluding("language")
+        getFilteredMoviesExcludingFilter(movies, filters, "language"),
+        "language"
       ),
     };
-  }, [getFilteredMoviesExcluding]);
+  }, [movies, filters]);
 
-  const handleFilterChange = (key: FilterKey, value: FilterValue | string) => {
-    if (key === "search") {
-      dispatch(setFilter({ key, value: value as string }));
-    } else {
-      dispatch(setFilter({ key, value: value as FilterValue }));
-    }
-  };
+  const handleFilterChange = useCallback(
+    (key: FilterKey, value: string | null) => {
+      dispatch(setFilter({ key, value }));
+    },
+    [dispatch]
+  );
 
-  const hasActiveFilters = Object.values(filters).some(Boolean);
+  const handleClearFilters = useCallback(() => {
+    dispatch(clearFilters());
+  }, [dispatch]);
+
+  const hasActiveFilters = Boolean(
+    filters.search ||
+      filters.year ||
+      filters.genre ||
+      filters.country ||
+      filters.language
+  );
 
   return {
     filters,
     filterOptions,
+    filteredMovies,
     handleFilterChange,
-    handleClearFilters: () => dispatch(clearFilters()),
+    handleClearFilters,
     hasActiveFilters,
   };
 };

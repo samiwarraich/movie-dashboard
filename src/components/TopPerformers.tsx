@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useSelector } from "@/redux/hooks";
+import { useMovieFilters } from "@/hooks/useMovieFilters";
 import { Star, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -17,7 +17,7 @@ interface TopPerformersProps {
 }
 
 const TopPerformers = ({ view }: TopPerformersProps) => {
-  const { filteredMovies } = useSelector((state) => state.movies);
+  const { filteredMovies } = useMovieFilters();
 
   const topMovies = useMemo(() => {
     let sorted;

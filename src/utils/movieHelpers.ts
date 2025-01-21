@@ -1,49 +1,76 @@
-import type { Movie, OscarStats, Filters } from "@/types";
-
-export const calculateOscarStats = (movies: Movie[]): OscarStats => {
-  return movies.reduce(
-    (acc, movie) => {
-      const year = movie.year;
-      acc.nominationsByYear[year] =
-        (acc.nominationsByYear[year] || 0) + movie.oscar_nominations;
-      acc.winsByYear[year] = (acc.winsByYear[year] || 0) + movie.oscar_winning;
-      return acc;
-    },
-    { nominationsByYear: {}, winsByYear: {} } as OscarStats
-  );
-};
-
-export const getUniqueValues = <T extends keyof Movie>(
-  movies: Movie[],
-  key: T
-): Movie[T][] => {
-  if (key === "year") {
-    return [...new Set(movies.map((movie) => movie[key]))].sort().reverse();
-  }
-
-  const allValues = movies.flatMap((movie) =>
-    Array.isArray(movie[key]) ? movie[key] : [movie[key]]
-  );
-  return [...new Set(allValues)].sort();
-};
+// src/utils/movieHelpers.ts
+import type { Movie, Filters, OscarStats } from "@/types";
 
 export const applyMovieFilters = (
   movies: Movie[],
   filters: Filters
 ): Movie[] => {
   return movies.filter((movie) => {
-    const searchMatch =
-      !filters.search.trim() ||
-      movie.title.toLowerCase().includes(filters.search.toLowerCase().trim());
-    const yearMatch = !filters.year || movie.year === filters.year;
-    const genreMatch = !filters.genre || movie.genre.includes(filters.genre);
-    const countryMatch =
-      !filters.country || movie.country.includes(filters.country);
-    const languageMatch =
-      !filters.language || movie.language.includes(filters.language);
+    // Search filter
+    if (
+      filters.search &&
+      !movie.title.toLowerCase().includes(filters.search.toLowerCase())
+    ) {
+      return false;
+    }
 
-    return (
-      searchMatch && yearMatch && genreMatch && countryMatch && languageMatch
-    );
+    // Year filter
+    if (filters.year && movie.year !== filters.year) {
+      return false;
+    }
+
+    // Genre filter
+    if (filters.genre && !movie.genre.includes(filters.genre)) {
+      return false;
+    }
+
+    // Country filter
+    if (filters.country && !movie.country.includes(filters.country)) {
+      return false;
+    }
+
+    // Language filter
+    if (filters.language && !movie.language.includes(filters.language)) {
+      return false;
+    }
+
+    return true;
   });
+};
+
+export const getUniqueValues = (
+  movies: Movie[],
+  key: keyof Movie
+): string[] => {
+  if (key === "year") {
+    return [...new Set(movies.map((movie) => movie[key]))].sort().reverse();
+  }
+
+  const values = movies.flatMap((movie) => {
+    const value = movie[key];
+    return Array.isArray(value) ? value : [value.toString()];
+  });
+
+  return [...new Set(values)].sort();
+};
+
+export const calculateOscarStats = (movies: Movie[]): OscarStats => {
+  const stats: OscarStats = {
+    nominationsByYear: {},
+    winsByYear: {},
+  };
+
+  movies.forEach((movie) => {
+    // Initialize the year if it doesn't exist
+    if (!stats.nominationsByYear[movie.year]) {
+      stats.nominationsByYear[movie.year] = 0;
+      stats.winsByYear[movie.year] = 0;
+    }
+
+    // Add the nominations and wins
+    stats.nominationsByYear[movie.year] += movie.oscar_nominations;
+    stats.winsByYear[movie.year] += movie.oscar_winning;
+  });
+
+  return stats;
 };

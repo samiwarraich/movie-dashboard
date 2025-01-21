@@ -1,7 +1,7 @@
 // src/components/Movies.tsx
 import { useEffect, useMemo } from "react";
 import { Star, Award } from "lucide-react";
-import { useSelector } from "@/redux/hooks";
+import { useMovieFilters } from "@/hooks/useMovieFilters";
 import {
   Table,
   TableBody,
@@ -13,50 +13,27 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 const Movies = () => {
-  const { filteredMovies, filters } = useSelector((state) => state.movies);
+  const { filteredMovies, filters } = useMovieFilters();
 
   // Debug logging
-  console.log("Current filters:", filters);
-  console.log(
-    "Filtered movies:",
-    filteredMovies.map((m) => ({
-      title: m.title,
-      year: m.year,
-      matches: {
-        search:
-          !filters.search ||
-          m.title.toLowerCase().includes(filters.search.toLowerCase()),
-        year: !filters.year || m.year === filters.year,
-        genre: !filters.genre || m.genre.includes(filters.genre),
-        country: !filters.country || m.country.includes(filters.country),
-        language: !filters.language || m.language.includes(filters.language),
-      },
-    }))
-  );
-
-  // Debug log to check filtered results
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
+      console.log("Current filters:", filters);
       console.log(
         "Filtered Movies:",
         filteredMovies.map((m) => `${m.title} (${m.year})`)
       );
-      console.log("Current filters:", filters);
       console.log("Filtered movies count:", filteredMovies.length);
-    }
-  }, [filteredMovies, filters]);
 
-  // Add verification logging in development
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
+      // Verification logging
       const lordMovies = filteredMovies.filter(
         (m) => m.title.toLowerCase().includes("lord") && m.year === "2003"
       );
       console.log("Lord movies from 2003:", lordMovies);
     }
-  }, [filteredMovies]);
+  }, [filteredMovies, filters]);
 
-  // Memoize the table rows with filters in dependency array
+  // Memoize the table rows
   const moviesList = useMemo(() => {
     return filteredMovies.map((movie) => (
       <TableRow key={`${movie.title}-${movie.year}`}>

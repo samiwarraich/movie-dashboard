@@ -5,7 +5,7 @@ import {
   NameType,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import { useSelector } from "@/redux/hooks";
+import { useMovieFilters } from "@/hooks/useMovieFilters";
 import { ChartContainer } from "@/components/ui/chart";
 import { Card } from "@/components/ui/card";
 
@@ -27,7 +27,7 @@ const COLORS = [
 ];
 
 const CountryLanguageInsights = ({ view }: CountryLanguageInsightsProps) => {
-  const { filteredMovies } = useSelector((state) => state.movies); // Change from movies to filteredMovies
+  const { filteredMovies } = useMovieFilters();
 
   // Process data based on view
   const data = filteredMovies.reduce((acc, movie) => {

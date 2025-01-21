@@ -1,18 +1,20 @@
+// src/components/MovieSearchFilters.tsx
 import { Search, X } from "lucide-react";
 import { useMovieFilters } from "@/hooks/useMovieFilters";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FilterSelect } from "./FilterSelect";
-import type { FilterKey } from "@/types";
 
-type FilterOptionsKey = "years" | "genres" | "countries" | "languages";
-const filterMappings: Record<FilterKey, FilterOptionsKey> = {
+// Define the mapping between filter keys and their option keys
+const selectFilters = {
   year: "years",
   genre: "genres",
   country: "countries",
   language: "languages",
-  search: "years", // This won't be used but is needed for the type
-};
+} as const;
+
+// Create a type for the option keys
+type OptionKey = (typeof selectFilters)[keyof typeof selectFilters];
 
 const MovieSearchFilters = () => {
   const {
@@ -48,12 +50,17 @@ const MovieSearchFilters = () => {
 
       {/* Filter selects */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-        {(["year", "genre", "country", "language"] as const).map((key) => (
+        {(
+          Object.entries(selectFilters) as [
+            keyof typeof selectFilters,
+            OptionKey
+          ][]
+        ).map(([key, optionsKey]) => (
           <FilterSelect
             key={key}
             label={key.charAt(0).toUpperCase() + key.slice(1)}
             value={filters[key]}
-            options={filterOptions[filterMappings[key]]}
+            options={filterOptions[optionsKey]}
             onChange={(value) => handleFilterChange(key, value)}
           />
         ))}
