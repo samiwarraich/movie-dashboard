@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "@/redux/hooks";
 import { fetchMovieData } from "@/redux/movies/dashboard-thunks";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Loading } from "@/components/ui/loading";
+import { Error } from "@/components/ui/error";
 import OscarStatisticsOverview from "@/components/oscar-statistics-overview";
 import TopPerformers from "@/components/top-performers";
 import MovieSearchFilters from "@/components/movie-search-filters";
 import CountryLanguageInsights from "@/components/country-language-insights";
 import MoviesList from "@/components/movies-list";
-import Loading from "@/components/loading";
-import Error from "@/components/error";
 
 function App() {
   const dispatch = useDispatch();

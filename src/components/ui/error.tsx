@@ -2,7 +2,7 @@ import { AlertCircle } from "lucide-react";
 import { useDispatch, useSelector } from "@/redux/hooks";
 import { fetchMovieData } from "@/redux/movies/dashboard-thunks";
 
-const Error = () => {
+export const Error = () => {
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.movies);
   return (
@@ -23,5 +23,3 @@ const Error = () => {
     </div>
   );
 };
-
-export default Error;
