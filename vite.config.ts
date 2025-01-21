@@ -11,10 +11,14 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api/api": {
-        target: "https://www.jsondataai.com",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/api/, "/api"),
+      "/api": {
+        target: "https://www.jsondataai.com", // API base URL
+        changeOrigin: true, // Handles CORS by changing the origin header
+        rewrite: (path) => path.replace(/^\/api/, "/api"), // Removes `/api` prefix
+        secure: false, // Allows https connections with self-signed certificates (if any)
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
       },
     },
   },
