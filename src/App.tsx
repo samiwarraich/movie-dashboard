@@ -1,16 +1,15 @@
-// src/App.tsx
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "@/redux/hooks";
-import { fetchMovieData } from "./redux/movies/dashboardThunks";
-import OscarStatisticsOverview from "@/components/OscarStatisticsOverview";
-import TopPerformers from "@/components/TopPerformers";
-import MovieSearchFilters from "@/components/MovieSearchFilters";
-import CountryLanguageInsights from "@/components/CountryLanguageInsights";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Loading from "@/components/Loading";
-import Movies from "@/components/Movies";
+import { fetchMovieData } from "@/redux/movies/dashboard-thunks";
 import { Card } from "@/components/ui/card";
-import Error from "@/components/Error";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import OscarStatisticsOverview from "@/components/oscar-statistics-overview";
+import TopPerformers from "@/components/top-performers";
+import MovieSearchFilters from "@/components/movie-search-filters";
+import CountryLanguageInsights from "@/components/country-language-insights";
+import Movies from "@/components/movies";
+import Loading from "@/components/loading";
+import Error from "@/components/error";
 
 function App() {
   const dispatch = useDispatch();

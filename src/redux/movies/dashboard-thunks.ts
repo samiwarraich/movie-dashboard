@@ -1,4 +1,3 @@
-// src/redux/movies/dashboardThunks.ts
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { Movie } from "@/types";
 

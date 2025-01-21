@@ -1,5 +1,5 @@
-// src/components/TopPerformers.tsx
 import { useMemo } from "react";
+import { Star, Trophy } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -8,9 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useMovieFilters } from "@/hooks/useMovieFilters";
-import { Star, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useMovieFilters } from "@/hooks/use-movie-filters";
 
 interface TopPerformersProps {
   view: "ratings" | "oscars";

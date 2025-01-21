@@ -1,7 +1,5 @@
-// src/components/Movies.tsx
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Star, Award } from "lucide-react";
-import { useMovieFilters } from "@/hooks/useMovieFilters";
 import {
   Table,
   TableBody,
@@ -11,29 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { useMovieFilters } from "@/hooks/use-movie-filters";
 
 const Movies = () => {
-  const { filteredMovies, filters } = useMovieFilters();
+  const { filteredMovies } = useMovieFilters();
 
-  // Debug logging
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
-      console.log("Current filters:", filters);
-      console.log(
-        "Filtered Movies:",
-        filteredMovies.map((m) => `${m.title} (${m.year})`)
-      );
-      console.log("Filtered movies count:", filteredMovies.length);
-
-      // Verification logging
-      const lordMovies = filteredMovies.filter(
-        (m) => m.title.toLowerCase().includes("lord") && m.year === "2003"
-      );
-      console.log("Lord movies from 2003:", lordMovies);
-    }
-  }, [filteredMovies, filters]);
-
-  // Memoize the table rows
   const moviesList = useMemo(() => {
     return filteredMovies.map((movie) => (
       <TableRow key={`${movie.title}-${movie.year}`}>

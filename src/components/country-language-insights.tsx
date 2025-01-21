@@ -1,13 +1,12 @@
-// src/components/CountryLanguageInsights.tsx
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import {
   Payload,
   NameType,
   ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import { useMovieFilters } from "@/hooks/useMovieFilters";
-import { ChartContainer } from "@/components/ui/chart";
 import { Card } from "@/components/ui/card";
+import { ChartContainer } from "@/components/ui/chart";
+import { useMovieFilters } from "@/hooks/use-movie-filters";
 
 interface ChartData {
   name: string;

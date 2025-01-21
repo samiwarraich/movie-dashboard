@@ -1,6 +1,5 @@
-// src/hooks/useOscarStats.ts
 import { useMemo } from "react";
-import { useMovieFilters } from "./useMovieFilters";
+import { useMovieFilters } from "./use-movie-filters";
 
 export const useOscarStats = () => {
   const { filteredMovies } = useMovieFilters();
@@ -28,7 +27,7 @@ export const useOscarStats = () => {
 
       return acc;
     }, initialStats);
-  }, [filteredMovies]); // Now depends on filtered movies
+  }, [filteredMovies]);
 
   return { stats };
 };

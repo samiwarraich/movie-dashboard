@@ -1,6 +1,5 @@
-// src/redux/store.ts
 import { configureStore } from "@reduxjs/toolkit";
-import dashboardReducer from "@/redux/movies/dashboardSlice";
+import dashboardReducer from "@/redux/movies/dashboard-slice";
 
 export const store = configureStore({
   reducer: {
@@ -9,7 +8,6 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-      ignoredActions: ["dashboard/fetchMovieData/fulfilled"],
     }),
   devTools: true,
 });

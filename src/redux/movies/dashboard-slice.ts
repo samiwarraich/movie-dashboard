@@ -1,7 +1,6 @@
-// src/redux/movies/dashboardSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { DashboardState, Movie, FilterKey } from "@/types";
-import { fetchMovieData } from "./dashboardThunks";
+import { fetchMovieData } from "./dashboard-thunks";
 
 const initialState: DashboardState = {
   movies: [],
@@ -27,7 +26,6 @@ const dashboardSlice = createSlice({
   reducers: {
     setFilter: (state, action: PayloadAction<SetFilterPayload>) => {
       const { key, value } = action.payload;
-      // Type assertion to help TypeScript understand this is safe
       if (key === "search") {
         state.filters[key] = value || "";
       } else {

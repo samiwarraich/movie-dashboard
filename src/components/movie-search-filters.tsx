@@ -1,11 +1,9 @@
-// src/components/MovieSearchFilters.tsx
 import { Search, X } from "lucide-react";
-import { useMovieFilters } from "@/hooks/useMovieFilters";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FilterSelect } from "./FilterSelect";
+import { useMovieFilters } from "@/hooks/use-movie-filters";
+import { FilterSelect } from "./filter-select";
 
-// Define the mapping between filter keys and their option keys
 const selectFilters = {
   year: "years",
   genre: "genres",
@@ -13,7 +11,6 @@ const selectFilters = {
   language: "languages",
 } as const;
 
-// Create a type for the option keys
 type OptionKey = (typeof selectFilters)[keyof typeof selectFilters];
 
 const MovieSearchFilters = () => {
@@ -47,7 +44,6 @@ const MovieSearchFilters = () => {
           </Button>
         )}
       </div>
-
       {/* Filter selects */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {(
@@ -65,7 +61,6 @@ const MovieSearchFilters = () => {
           />
         ))}
       </div>
-
       {/* Clear filters button */}
       {hasActiveFilters && (
         <div className="flex justify-end">

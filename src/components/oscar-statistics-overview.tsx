@@ -1,7 +1,5 @@
-// src/components/OscarStatisticsOverview.tsx
 import { useMemo } from "react";
 import { ResponsiveContainer, Bar, BarChart, XAxis, YAxis } from "recharts";
-import { useOscarStats } from "@/hooks/useOscarStats";
 import {
   CardContent,
   CardHeader,
@@ -13,6 +11,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useOscarStats } from "@/hooks/use-oscar-stats";
 
 const OscarStatisticsOverview = () => {
   const { stats } = useOscarStats();
@@ -27,7 +26,6 @@ const OscarStatisticsOverview = () => {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [stats]);
 
-  // Chart configuration for shadcn chart
   const chartConfig = {
     Nominations: {
       label: "Nominations",

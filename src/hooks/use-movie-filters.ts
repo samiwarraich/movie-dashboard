@@ -1,24 +1,12 @@
-// src/hooks/useMovieFilters.ts
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "@/redux/hooks";
-import { setFilter, clearFilters } from "@/redux/movies/dashboardSlice";
-import { applyMovieFilters, getUniqueValues } from "@/utils/movieHelpers";
-import type { FilterKey, Movie, Filters } from "@/types";
-
-// Helper function to get filtered movies excluding one filter
-const getFilteredMoviesExcludingFilter = (
-  movies: Movie[],
-  filters: Filters,
-  excludeKey: FilterKey
-): Movie[] => {
-  const tempFilters = { ...filters };
-  if (excludeKey === "search") {
-    tempFilters.search = "";
-  } else {
-    tempFilters[excludeKey] = null;
-  }
-  return applyMovieFilters(movies, tempFilters);
-};
+import { setFilter, clearFilters } from "@/redux/movies/dashboard-slice";
+import {
+  applyMovieFilters,
+  getUniqueValues,
+  getFilteredMoviesExcludingFilter,
+} from "@/lib/movie-helpers";
+import type { FilterKey } from "@/types";
 
 export const useMovieFilters = () => {
   const dispatch = useDispatch();

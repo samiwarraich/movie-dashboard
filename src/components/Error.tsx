@@ -1,6 +1,6 @@
 import { AlertCircle } from "lucide-react";
 import { useDispatch, useSelector } from "@/redux/hooks";
-import { fetchMovieData } from "@/redux/movies/dashboardThunks";
+import { fetchMovieData } from "@/redux/movies/dashboard-thunks";
 
 function Error() {
   const dispatch = useDispatch();
