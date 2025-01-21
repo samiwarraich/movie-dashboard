@@ -7,7 +7,7 @@ import OscarStatisticsOverview from "@/components/oscar-statistics-overview";
 import TopPerformers from "@/components/top-performers";
 import MovieSearchFilters from "@/components/movie-search-filters";
 import CountryLanguageInsights from "@/components/country-language-insights";
-import Movies from "@/components/movies";
+import MoviesList from "@/components/movies-list";
 import Loading from "@/components/loading";
 import Error from "@/components/error";
 
@@ -82,7 +82,7 @@ function App() {
         <Card className="p-4">
           <h2 className="text-lg font-semibold mb-4">Movies List</h2>
           <div className="overflow-x-auto">
-            <Movies />
+            <MoviesList />
           </div>
         </Card>
       </div>

@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useMovieFilters } from "@/hooks/use-movie-filters";
 
-const Movies = () => {
+const MoviesList = () => {
   const { filteredMovies } = useMovieFilters();
 
   const moviesList = useMemo(() => {
@@ -87,4 +87,4 @@ const Movies = () => {
   );
 };
 
-export default Movies;
+export default MoviesList;
