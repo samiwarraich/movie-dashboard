@@ -14,7 +14,6 @@ export default defineConfig({
       "/api": {
         target: "https://www.jsondataai.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, "/api"),
       },
     },
   },

@@ -1,20 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { Movie } from "@/types";
 
-const apiUrl = import.meta.env.DEV
-  ? "/api/guK8Sdo"
-  : "https://www.jsondataai.com/api/guK8Sdo";
+const API_URL = import.meta.env.DEV
+  ? "/api/guK8Sdo" // Will be proxied in development
+  : "https://www.jsondataai.com/api/guK8Sdo"; // Direct URL in production
 
 export const fetchMovieData = createAsyncThunk(
   "dashboard/fetchMovieData",
   async () => {
-    const response = await fetch(apiUrl, {
-      method: "GET",
+    const response = await fetch(API_URL, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      mode: "cors",
     });
 
     if (!response.ok) throw new Error("Failed to fetch");
